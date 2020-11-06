@@ -32,7 +32,7 @@ Basic working repo structure for Adobe teams to use as a starting point for thei
 
 ---
 
-`PLUGINNAME` commands for the Adobe I/O CLI
+Firefly app file storage commands for the Adobe I/O CLI
 
 <!-- toc -->
 * [Usage](#usage)
@@ -41,10 +41,9 @@ Basic working repo structure for Adobe teams to use as a starting point for thei
 
 # Usage
 ```sh-session
-$ aio plugins:install -g @adobe/aio-cli-plugin-PLUGINNAME
+$ aio plugins:install -g @adobe/aio-cli-plugin-app-files
 $ # OR
-$ aio discover -i
-$ aio PLUGINNAME --help
+$ aio app files --help
 ```
 
 # Commands
