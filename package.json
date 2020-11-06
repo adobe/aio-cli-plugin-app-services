@@ -73,7 +73,7 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/tests/fixtures/"
-    ],    
+    ],
     "coverageThreshold": {
       "global": {
         "branches": 0,
