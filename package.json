@@ -13,14 +13,14 @@
     "cli-ux": "^5.5.0",
     "fs-extra": "^9.0.1",
     "js-yaml": "^3.14.0",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "chalk": "^4.1.0",
+    "@oclif/plugin-help": "^2.2.3"
   },
   "devDependencies": {
     "@adobe/eslint-config-aio-lib-config": "^1.2.0",
     "@oclif/dev-cli": "^1",
-    "@oclif/plugin-help": "^2.2.3",
     "acorn": "^7",
-    "chalk": "^4.1.0",
     "eslint": "^6.2.2",
     "eslint-config-oclif": "^3.1.0",
     "eslint-config-standard": "^14.1.1",
@@ -73,7 +73,14 @@
     ],
     "coveragePathIgnorePatterns": [
       "<rootDir>/tests/fixtures/"
-    ],
+    ],    
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    },
     "reporters": [
       "default",
       "jest-junit"
