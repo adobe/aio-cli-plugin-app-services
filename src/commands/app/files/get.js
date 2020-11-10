@@ -50,6 +50,9 @@ class GetCommand extends BaseCommand {
     })
 
     const result = await res.json()
+    if (res.status !== 200) {
+      this.error(result.error)
+    }
     this.log(result)
   }
 }

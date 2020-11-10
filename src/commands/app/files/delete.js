@@ -46,9 +46,11 @@ class DeleteCommand extends BaseCommand {
           path: argv
         })
     })
-    console.log('res = ', res)
 
     const result = await res.json()
+    if (res.status !== 200) {
+      this.error(result.error)
+    }
     this.log(result)
   }
 }

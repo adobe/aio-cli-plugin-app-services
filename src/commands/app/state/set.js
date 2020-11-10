@@ -53,13 +53,12 @@ class SetCommand extends BaseCommand {
     })
 
     const result = await res.json()
+    if (res.status !== 200) {
+      this.error(result.error)
+    }
     this.log(JSON.stringify(result))
   }
 }
-
-// SetCommand.flags = {
-
-// }
 
 SetCommand.description = 'set value for key in state store'
 SetCommand.examples = [

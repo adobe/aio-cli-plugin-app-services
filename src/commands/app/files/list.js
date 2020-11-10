@@ -65,6 +65,10 @@ class ListCommand extends BaseCommand {
 
     const result = await res.json()
 
+    if (res.status !== 200) {
+      this.error(result.error)
+    }
+
     if (flags.json) {
       this.log(JSON.stringify(result.fileList, null, 2))
     } else if (flags.list) {
