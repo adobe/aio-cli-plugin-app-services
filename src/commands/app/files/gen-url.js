@@ -10,31 +10,19 @@ OF ANY KIND, either express or implied. See the License for the specific languag
 governing permissions and limitations under the License.
 */
 
-const { flags } = require('@oclif/command')
 const BaseCommand = require('../../../BaseCommand')
 // const aioLogger = require('@adobe/aio-lib-core-logging')('app-files', { provider: 'debug' })
 const fetch = require('node-fetch')
 const ActionPaths = require('../../../actionPaths')
-const { cli } = require('cli-ux')
+const oneDay = (60 * 60 * 24)
 
-const fileAPIUrl = ActionPaths['file-list']
+const { flags } = require('@oclif/command')
 
-const formatBytes = (bytes) => {
-  if (bytes < 1024) {
-    return Math.floor(bytes * 10) / 10 + ' bytes'
-  }
-  if (bytes < 1024 * 1024) {
-    return Math.floor(bytes / 1024 * 10) / 10 + 'kb'
-  }
-  if (bytes < 1024 * 1024 * 1024) {
-    return Math.floor(bytes / 1024 / 1024 * 10) / 10 + 'mb'
-  }
-  return Math.floor(bytes / 1024 / 1024 / 1024 * 10) / 10 + 'gb'
-}
+const fileAPIUrl = ActionPaths['file-gen-url']
 
-class ListCommand extends BaseCommand {
+class GenUrlCommand extends BaseCommand {
   async run () {
-    const { flags } = this.parse(ListCommand)
+    const { args, flags } = this.parse(GenUrlCommand)
     let config
     try {
       config = this.getAppConfig()
@@ -46,7 +34,23 @@ class ListCommand extends BaseCommand {
 
     const auth = config.ow.auth
     const namespace = config.ow.namespace
+
     const creds = await this.getAccessTokenAndOrgId()
+
+    const PermLimitLength = new RegExp('^.{1,3}$') // limit length from 1-3
+    const PermLimitChars = new RegExp('^[rwd]*$') // only allow combination of 'r', 'w' or 'd'
+
+    if (!PermLimitChars.test(flags.permissions)) {
+      this.error('expected permissions flag to be in the set [r, w, d, rw, rd, wd, rwd]')
+    }
+
+    if (!PermLimitLength.test(flags.permissions)) {
+      this.error('too many or too few permission characters')
+    }
+
+    if (flags.expiry < 2 || flags.expiry > oneDay) {
+      this.error(`expiry is expected to be between 2 and ${oneDay} seconds`)
+    }
 
     const res = await fetch(fileAPIUrl, {
       method: 'post',
@@ -59,67 +63,45 @@ class ListCommand extends BaseCommand {
         JSON.stringify({
           owNamespace: namespace,
           owAuth: auth,
-          path: flags.path
+          path: args.path,
+          permissions: flags.permissions,
+          expiryInSeconds: flags.expiry
         })
     })
 
     const result = await res.json()
-
     if (res.status !== 200) {
       this.error(result.error)
     }
-
-    if (flags.json) {
-      this.log(JSON.stringify(result.fileList, null, 2))
-    } else if (flags.list) {
-      const columns = {
-        path: {
-          header: 'Path',
-          get: row => `${row.name}`
-        },
-        contentType: {
-          header: 'Content Type',
-          get: row => `${row.contentType}`
-        },
-        contentLength: {
-          header: 'Content Length',
-          get: row => `${formatBytes(row.contentLength)}`
-        }
-
-      }
-      cli.table(result.fileList, columns, {
-        'no-truncate': true
-      })
-    }
+    this.log(result)
   }
 }
 
-ListCommand.flags = {
-  path: flags.string({
+GenUrlCommand.description = 'Get details for files in file storage'
+GenUrlCommand.examples = [
+  '$ aio app files get some-file.txt'
+]
+
+GenUrlCommand.flags = {
+  permissions: flags.string({
     char: 'p',
-    description: 'file path to list',
-    default: '/'
+    description: 'read, write, delete : [ r, w, d]'
   }),
-  json: flags.boolean({
-    char: 'j',
-    description: 'output json data'
-  }),
-  list: flags.boolean({
-    char: 'l',
-    description: 'output a formatted list',
-    default: true,
-    exclusive: ['json']
+  expiry: flags.integer({
+    char: 'x',
+    description: `time till expiration in seconds ( 2-${oneDay} )`,
+    default: 120
   })
 }
 
-ListCommand.description = 'List files in file storage'
-ListCommand.examples = [
-  '$ aio app files list'
+GenUrlCommand.args = [{
+  name: 'path',
+  required: false,
+  description: 'file path to generate url for'
+}]
+
+GenUrlCommand.aliases = [
+  'app:files:url'
 ]
 
-ListCommand.aliases = [
-  'app:files:list',
-  'app:files:ls'
-]
-
-module.exports = ListCommand
+module.exports = GenUrlCommand
