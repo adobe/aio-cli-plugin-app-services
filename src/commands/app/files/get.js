@@ -61,7 +61,7 @@ class GetCommand extends BaseCommand {
 
 // }
 
-GetCommand.description = 'Get details for files in file storage'
+GetCommand.description = 'Get details for a file in file storage'
 GetCommand.examples = [
   '$ aio app files get some-file.txt'
 ]

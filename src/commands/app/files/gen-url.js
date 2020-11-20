@@ -77,9 +77,9 @@ class GenUrlCommand extends BaseCommand {
   }
 }
 
-GenUrlCommand.description = 'Get details for files in file storage'
+GenUrlCommand.description = 'Generate a pre-signed url for a file with varying permissions and expiry'
 GenUrlCommand.examples = [
-  '$ aio app files get some-file.txt'
+  '$ aio app files gen-url some-file.txt'
 ]
 
 GenUrlCommand.flags = {

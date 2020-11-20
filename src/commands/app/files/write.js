@@ -68,7 +68,7 @@ class WriteCommand extends BaseCommand {
 
 // }
 
-WriteCommand.description = 'Get details for files in file storage'
+WriteCommand.description = 'Write text directly to a file in storage'
 WriteCommand.examples = [
   '$ aio app files get some-file.txt'
 ]

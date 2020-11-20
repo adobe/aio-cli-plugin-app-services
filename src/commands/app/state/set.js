@@ -60,7 +60,7 @@ class SetCommand extends BaseCommand {
   }
 }
 
-SetCommand.description = 'set value for key in state store'
+SetCommand.description = 'Set value for key in state store'
 SetCommand.examples = [
   '$ aio app state set some-key "Some value"'
 ]

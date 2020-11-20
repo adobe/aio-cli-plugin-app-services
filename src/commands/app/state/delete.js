@@ -62,7 +62,7 @@ class DeleteCommand extends BaseCommand {
 
 // }
 
-DeleteCommand.description = 'delete key+value from state store'
+DeleteCommand.description = 'Delete key+value from state store'
 DeleteCommand.examples = [
   '$ aio app state delete some-key'
 ]
