@@ -1,8 +1,12 @@
 # aio-cli-plugin-app-files
 
-File and State SDK management from the aio-cli.
-Note this extention requires a backend service to be installed in your org.
-These commands are only available if you have already deployed adobe/aio-app-stash/ in your org.
+Project Firefly Services management from the [aio CLI](https://github.com/adobe/aio-cli):
+
+- Files storage via the [Files SDK](https://github.com/adobe/aio-lib-files)
+- State store via the [State SDK](https://github.com/adobe/aio-lib-state)
+
+**Note:** this extension requires a backend service to be installed in your Adobe IMS enterprise org.
+These commands are only available if you have already deployed the [Project Firefly App Stash](https://github.com/adobe/aio-app-stash) in your Adobe IMS enterprise org.
 
 ---
 
